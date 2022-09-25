@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('company');
             $table->string('email');
             $table->string('tags');
+            $table->string('img')->nullable();
         });
     }
 

@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ChripController;
+use App\Http\Controllers\JobController;
+use App\Models\Job;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +36,10 @@ require __DIR__.'/auth.php';
 Route::resource('chrips', ChripController::class)
     ->only(['index', 'store'])
     ->middleware(['auth','verified']);
+
+Route::get('/jobs',[JobController::class, 'index'])->name('jobs.index');
+Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+Route::post('/jobs/store',[JobController::class, 'store'])->name('jobs.store');
+Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobs.show');
+
+
