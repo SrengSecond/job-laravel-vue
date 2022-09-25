@@ -1,11 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use App\Models\User;
-
-use App\Models\Job;
-use App\Http\Controllers\JobController;
+use Inertia\Inertia;
+use App\Http\Controllers\ChripController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +17,20 @@ use App\Http\Controllers\JobController;
 */
 
 Route::get('/', function () {
-    Debugbar::info("INFO");
-    Debugbar::error("INFO");
-    Debugbar::warning("INFO");
-    Debugbar::addMessage('Another message', 'mylabel');
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::get('/job',[JobController::class, 'index']);
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/job/{id}', [JobController::class, 'detail']);
+require __DIR__.'/auth.php';
+
+Route::resource('chrips', ChripController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth','verified']);
