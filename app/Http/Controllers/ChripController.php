@@ -36,7 +36,13 @@ class ChripController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $request->user()->chrips()->create($validated);
+
+        return redirect(route('chrips.index'));
     }
 
     /**
