@@ -10,12 +10,15 @@ class Job extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'tags', 'location', 'company', 'email', 'salary','img'];
-
-    public static function showTags($tags)
-    {
-
-    }
+        'title',
+        'description',
+        'tags',
+        'location',
+        'company',
+        'email',
+        'salary',
+        'img'
+    ];
 
     public function scopeFilter($query, array $filters)
     {

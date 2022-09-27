@@ -34,5 +34,20 @@
             Apply
         </button>
 
+        <a class="btn btn-primary button" href="{{route('jobs.edit',$job->id)}}"
+                style="cursor: pointer;background: var(--primary-color);padding: 0.5em 1em;color: white">
+            Edit
+        </a>
+
+        <form method="POST" action="{{route('jobs.destroy',$job->id)}}">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-primary button"
+                    type="submit"
+                    style="cursor:pointer;background: var(--primary-color);padding: 0.5em 1em;color: white">
+                delete
+            </button>
+        </form>
+
     @endsection
 </x-layout>

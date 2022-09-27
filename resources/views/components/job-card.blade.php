@@ -37,6 +37,9 @@
                 Apply
             </button>
         </div>
+        {{--@php
+            dd($job->img);
+        @endphp--}}
         <img class="grow-0 max-w-xs w-full aspect-square object-cover" src="{{$job->img ? asset('storage/' . $job->img): asset('images/no-image.jpeg')}}" alt="">
     </div>
 </div>

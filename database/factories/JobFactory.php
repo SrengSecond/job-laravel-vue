@@ -20,7 +20,7 @@ class JobFactory extends Factory
             'title' => fake()->jobTitle(),
             'description' => fake()->paragraph(),
             'location' => fake()->city(),
-            'salary' => fake()->numberBetween(100, 5000),
+            'salary' => fake()->numberBetween(1000, 5000),
             'company' => fake()->company(),
             'email' => fake()->email(),
             'tags' => fake()->words(3, true)

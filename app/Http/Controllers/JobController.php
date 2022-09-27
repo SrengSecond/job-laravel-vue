@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -14,13 +15,26 @@ class JobController extends Controller
                 ->filter(request(['tags','search']))
                 ->paginate(5),
         ]);
-
     }
-    public function show($id) {
+
+    public function show(Job $job) {
         return view('pages.job.show',[
             'header' => 'Job Detail',
-            'job'=> Job::find($id)
+            'job'=> $job
         ]);
+    }
+
+    public function show_manually($id) {
+
+        $job = Job::find($id);
+
+        if($job) {
+            return view('pages.job.show',[
+                'header' => 'Job Detail',
+                'job'=> $job
+            ]);
+        }
+        return abort('404');
     }
 
     public function create() {
@@ -29,9 +43,8 @@ class JobController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
-        /*dd($request);*/
-
+    public function store(Request $request): RedirectResponse
+    {
         $formFields = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -50,7 +63,35 @@ class JobController extends Controller
 
         /*Session::flash('message', 'Job created successfully');*/
 
-        return redirect(route('jobs.index'))->with('message', 'Job created successfully');
+        return redirect()->route('jobs.index')->with('message', 'Job created successfully');
+    }
+
+    public function destroy(Job $job): RedirectResponse
+    {
+        $job->delete();
+        return redirect()->route('jobs.index')->with('message','Job delete successfully');
+    }
+
+    public function edit(Job $job){
+        return view('pages.job.edit',[
+            'header' => 'Edit Job',
+            'job' => $job
+        ]);
+    }
+
+    public function update(Request $request,Job $job){
+        $formFields = $request->validate([
+                'title' => 'required|string|max:255',
+            ]
+        );
+
+        if($request->hasFile('img')) {
+            $formFields['img'] = $request->file('img')->store('images','public');
+        }
+
+        $job->update($formFields);
+
+        return redirect()->route('jobs.index')->with('message','Job updated successfully');
     }
 
     //Show
